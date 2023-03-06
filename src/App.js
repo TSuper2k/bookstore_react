@@ -1,12 +1,16 @@
 import Header from './components/Header';
 import Main from './components/Main';
 import Basket from './components/Basket';
-import data from './data';
+import Data from './data';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import { useState } from 'react';
+import LoginForm from './components/Login';
 function App() {
-  const { products } = data;
+  const products = Data();
   const [cartItems, setCartItems] = useState([]);
-  
+
   const onAdd = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
@@ -19,7 +23,7 @@ function App() {
       setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
   };
-  
+
   const onRemove = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist.qty === 1) {
@@ -34,17 +38,20 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header countCartItems={cartItems.length}></Header>
-      <div className="row">
-        <Main products={products} onAdd={onAdd}></Main>
-        <Basket
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-        ></Basket>
+    <Router>
+      <div className="App">
+        <Header countCartItems={cartItems.length}></Header>
+        <Routes>
+          <Route path="/index" element={
+            <div className="row">
+              <Main products={products} onAdd={onAdd} />
+              <Basket cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />
+            </div>
+          } />
+          <Route path="/" element={<LoginForm />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
