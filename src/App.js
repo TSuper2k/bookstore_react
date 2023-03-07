@@ -6,13 +6,19 @@ import LoginForm from './components/Login';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
-
 import { useState } from 'react';
 
 function App() {
   const products = Data();
   const [cartItems, setCartItems] = useState([]);
 
+  // Xử lý logout
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setCartItems([]);
+  }
+
+  // Xử lý thêm sản phẩm vào giỏ
   const onAdd = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist) {
@@ -26,6 +32,7 @@ function App() {
     }
   };
 
+  // Xử lý xóa sản phẩm khỏi giỏ
   const onRemove = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
     if (exist.qty === 1) {
@@ -39,8 +46,9 @@ function App() {
     }
   };
 
+  // Xử lý đặt hàng
   const onCheckout = () => {
-    // Prepare the data for the order
+    // Data truyền vào orders
     const products = cartItems.map((item) => ({ book_id: item.id, quantity: item.quantity }));
     const totalPrice = cartItems.reduce((total, item) => total + (item.qty * item.price), 0);
     const body = {
@@ -48,7 +56,7 @@ function App() {
       totalPrice: totalPrice
     };
 
-    // Send the order data to the server
+    // Gửi data lên sever
     axios
       .post("http://localhost:8081/api/orders", body, {
         headers: {
@@ -56,21 +64,16 @@ function App() {
         },
       })
       .then((response) => {
-        // Empty the cart and display a success message
+        // Xóa giỏ hàng khi đặt hàng thành công
         setCartItems([]);
         alert("Checkout thành công!");
       })
       .catch((error) => {
-        // Display an error message if the server request fails
+        // Bắt lỗi nếu lỗi đặt hàng
         console.log(error);
         alert("Lỗi khi đặt hàng");
       });
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    setCartItems([]);
-  }
 
   return (
     <Router>

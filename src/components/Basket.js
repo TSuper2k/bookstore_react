@@ -23,7 +23,7 @@ export default function Basket(props) {
                                 </button>
                             </div>
                             <div className="col-2 text-right">
-                                {item.qty} x ${item.price}
+                                {item.qty} x {item.price.toLocaleString('vi-VN')} VNĐ
                             </div>
                         </div>
                     ))}
@@ -33,7 +33,7 @@ export default function Basket(props) {
                             <strong>Total Price</strong>
                         </div>
                         <div className="col-1 text-right">
-                            <strong>${totalPrice}</strong>
+                            <strong>{totalPrice.toLocaleString('vi-VN')} VNĐ</strong>
                         </div>
                     </div>
                     <hr />

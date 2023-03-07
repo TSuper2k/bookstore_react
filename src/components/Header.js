@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header(props) {
+    const { countCartItems, handleLogout } = props;
     const isLoggedIn = localStorage.getItem('access_token') !== null;
 
     return (
@@ -14,15 +15,15 @@ export default function Header(props) {
             <div>
                 <a href="#/cart">
                     Cart{' '}
-                    {props.countCartItems ? (
-                        <button className="badge">{props.countCartItems}</button>
+                    {countCartItems ? (
+                        <button className="badge">{countCartItems}</button>
                     ) : (
                         ''
                     )}
                 </a>{' '}
                 {isLoggedIn ? (
                     <>
-                        <button onClick={props.handleLogout}>Log Out</button>
+                        <button onClick={handleLogout}>Log Out</button>
                     </>
                 ) : (
                     <Link to="/"><button>Log in</button></Link>
