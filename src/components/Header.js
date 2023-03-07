@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header(props) {
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
-
-    const handleLogout = () => {
-        setIsLoggedIn(false);
-        localStorage.removeItem('isLoggedIn');
-    }
+    const isLoggedIn = localStorage.getItem('access_token') !== null;
 
     return (
         <header className="block row center">
@@ -27,18 +22,10 @@ export default function Header(props) {
                 </a>{' '}
                 {isLoggedIn ? (
                     <>
-                        <a href="#" onClick={handleLogout}>Logout</a>
-                        <a href="#/cart">
-                            Cart{' '}
-                            {props.countCartItems ? (
-                                <button className="badge">{props.countCartItems}</button>
-                            ) : (
-                                ''
-                            )}
-                        </a>
+                        <button onClick={props.handleLogout}>Log Out</button>
                     </>
                 ) : (
-                    <Link to="/"> SignIn</Link>
+                    <Link to="/"><button>Log in</button></Link>
                 )}
             </div>
         </header>

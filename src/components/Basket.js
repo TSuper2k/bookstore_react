@@ -38,7 +38,7 @@ export default function Basket(props) {
                     </div>
                     <hr />
                     <div className="row">
-                        <button onClick={() => alert('Implement Checkout!')}>
+                        <button onClick={props.onCheckout}>
                             Checkout
                         </button>
                     </div>
